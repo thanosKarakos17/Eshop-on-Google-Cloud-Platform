@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
+import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -20,19 +20,19 @@ export default function ProductCreation() {
     return (
         <ThemeProvider theme={theme}>
             <Card sx={{ maxWidth: 345 }}>
-            <TextField
-            required
-            label="Product Title"
-            />
+                <CardHeader title='Upload New Product' />
             <CardContent>
-                <Button variant="contained" component="label">
-                Upload Image
+                <TextField
+                required
+                label="Product Title"
+                />
+                <br/>
+                <label for='imager'>Upload Image</label>
                 <input
                     type="file"
-                    hidden
+                    id='imager'
                     accept="image/*"
-                />
-                </Button>
+                ></input>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 <TextField
                 required
@@ -42,7 +42,7 @@ export default function ProductCreation() {
                 <Typography variant="body1" sx={{ color: 'text.primary' }}>
                 <TextField
                 required
-                label="Required"
+                label="Price"
                 />
                 </Typography>
             </CardContent>
