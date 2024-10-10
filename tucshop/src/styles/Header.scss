@@ -11,12 +11,29 @@
     position: relative;
     i{
         font-size: 1.8rem;
+        cursor: pointer;
     }
   
-    .place {
-      font-size: 1.2rem;
-      i {
-        margin-right: 0.25rem;
+    .theme-toggler {
+      $size: 50px;
+      .theme-buttons {
+        cursor: pointer;
+  
+        display: flex;
+        position: relative;
+        height: $size;
+        width: $size;
+        overflow: hidden;
+  
+        .light-theme-btn,
+        .dark-theme-btn {
+          position: absolute;
+          top: $size;
+          transition: top 0.5s ease-in-out;
+          &.active {
+            top: 0;
+          }
+        }
       }
     }
   }
