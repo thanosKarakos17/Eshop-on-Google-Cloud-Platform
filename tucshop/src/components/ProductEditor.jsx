@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -20,10 +20,17 @@ export default function ProductEditor() {
       });
 
     const {title: curTitle, description: curDescription, image: curImage, price: curPrice} = useContext(EditProductContext);
-    const [image, setImage] = useState(curImage);
-    const [price, setPrice] = useState(curPrice);
-    const [description, setDescription] = useState(curDescription);
-    const [title, setTitle] = useState(curTitle);
+    const [image, setImage] = useState(curImage || '');
+    const [price, setPrice] = useState(curPrice || '');
+    const [description, setDescription] = useState(curDescription || '');
+    const [title, setTitle] = useState(curTitle || '');
+
+    useEffect(() => {
+        setTitle(curTitle || '');  // Reinitialize local state when context updates
+        setDescription(curDescription || '');
+        setImage(curImage || '');
+        setPrice(curPrice || '');
+      }, [curTitle, curDescription, curImage, curPrice]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -33,7 +40,7 @@ export default function ProductEditor() {
                 <TextField
                 required
                 label="Product Title"
-                defaultValue={curTitle}
+                value={title}
                 onChange={(e) => {setTitle(e.target.value)}}
                 />
                 <CardMedia sx={{marginTop: 1.5}}
@@ -62,7 +69,8 @@ export default function ProductEditor() {
                 <TextField
                 required
                 label="Price"
-                defaultValue={curPrice}
+                
+                value={price}
                 onChange={(e) => {setPrice(e.target.value)}}
                 />
                 </Typography>
