@@ -1,14 +1,16 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useState} from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ThemeContext } from '../context/theme.context';
+import { EditProductContext } from '../context/editProduct.context';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 
-export default function ProductCreation() {
+export default function ProductEditor() {
     
     const {dark} = useContext(ThemeContext);
     const theme = createTheme({
@@ -17,29 +19,30 @@ export default function ProductCreation() {
         },
       });
 
-    const [uploadNotReady, setUploadNotReady] = useState(true);
-    const [image, setImage] = useState(null);
-    const [price, setPrice] = useState(null);
-    const [description, setDescription] = useState(null);
-    const [title, setTitle] = useState(null);
-
-    useEffect(() => {
-        if(image && price && description && title)setUploadNotReady(false);
-        else setUploadNotReady(true);
-    }, [image, price, description, title]);
+    const {title: curTitle, description: curDescription, image: curImage, price: curPrice} = useContext(EditProductContext);
+    const [image, setImage] = useState(curImage);
+    const [price, setPrice] = useState(curPrice);
+    const [description, setDescription] = useState(curDescription);
+    const [title, setTitle] = useState(curTitle);
 
     return (
         <ThemeProvider theme={theme}>
             <Card sx={{ maxWidth: 345 }}>
-                <CardHeader title='Upload New Product' />
+                <CardHeader title={`Edit Item "${title}"`} />
             <CardContent>
                 <TextField
                 required
                 label="Product Title"
+                defaultValue={curTitle}
                 onChange={(e) => {setTitle(e.target.value)}}
                 />
+                <CardMedia sx={{marginTop: 1.5}}
+                component="img"
+                maxHeight="194"
+                image={image}
+            />
                 <br/>
-                <label for='imager'>Upload Image</label>
+                <label for='imager'>Upload New Image</label>
                 <input
                     type="file"
                     id='imager'
@@ -50,6 +53,7 @@ export default function ProductCreation() {
                 <TextField
                 required
                 label="Product Description"
+                defaultValue={curDescription}
                 multiline
                 onChange={(e) => {setDescription(e.target.value)}}
                 />
@@ -58,10 +62,12 @@ export default function ProductCreation() {
                 <TextField
                 required
                 label="Price"
+                defaultValue={curPrice}
                 onChange={(e) => {setPrice(e.target.value)}}
                 />
                 </Typography>
-                <Button variant="outlined" disabled={uploadNotReady} sx={{marginTop: 1.5 }}>Upload</Button>
+                <Button variant="outlined" sx={{marginTop: 1.5 }}>Update</Button>
+                <Button variant="outlined" sx={{marginTop: 1.5, marginLeft: 1.5 }}>Remove</Button>
             </CardContent>
             </Card>
         </ThemeProvider>

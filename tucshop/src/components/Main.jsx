@@ -1,14 +1,14 @@
 import '../styles/Main.scss';
-import ProductCreation from './ProductCreation';
 import Products from './Products';
-import ProductWidget from './ProductWidget';
+import SellerTools from './SellerTools';
+import { PRODUCTS } from "../dummy";
 
 
 export default function Main(){
     return(
         <div className='Main'>
-            <Products/>
-            <ProductCreation></ProductCreation>
+            {/*<Products productList={PRODUCTS}/>*/}
+            <SellerTools/>
         </div>
     );
 }

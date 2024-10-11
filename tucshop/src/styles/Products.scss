@@ -4,3 +4,12 @@
     grid-gap: 20px;
     padding: 20px;
   }
+
+  .seller-container {
+    display: flex;
+    flex-wrap: wrap; // Allows wrapping to the next line if the container is too small
+    gap: 20px; // Adds space between each item
+    padding: 20px;
+    justify-content: space-between; // Ensures even spacing between items
+    align-items: flex-start; // Aligns the items at the top
+  }
