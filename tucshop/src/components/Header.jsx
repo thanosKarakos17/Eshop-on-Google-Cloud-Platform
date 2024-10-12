@@ -3,6 +3,7 @@ import Search from './Search';
 import { useContext, useState } from 'react';
 import { ThemeContext } from '../context/theme.context';
 import Badge from '@mui/material/Badge';
+import { CartContext } from '../context/cart.context';
 
 export default function Header(){
 
@@ -12,12 +13,14 @@ export default function Header(){
         setDark(prev => !prev);
     }
     
+    const {productSet} = useContext(CartContext);
+
     return(
         <div className='Header'>
             <Search/>
             <i className='bi bi-receipt'> Order History</i>
             <i className='bi bi-tools'> Seller Tools</i>
-            <Badge badgeContent={4} color="primary">
+            <Badge badgeContent={Object.keys(productSet).length} color="primary">
             <i className={`bi bi-cart${cart_enter? '-fill' : ''}`} onMouseEnter={() => {SetCart(true)}} onMouseLeave={() => {SetCart(false)}}> Cart</i>
             </Badge>
             <i className='bi bi-person-circle'></i>

@@ -18,4 +18,10 @@ export default function CartProvider({children}){
         });}
     }
 
+    return(
+        <CartContext.Provider value={{productSet, addToCart}}>
+            {children}
+        </CartContext.Provider>
+    );
+
 }

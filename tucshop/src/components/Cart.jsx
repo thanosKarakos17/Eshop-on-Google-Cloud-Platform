@@ -1,46 +1,35 @@
-import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Checkbox from '@mui/material/Checkbox';
-import Avatar from '@mui/material/Avatar';
-import { ThemeContext } from '../context/theme.context';
+import { useContext } from 'react';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeContext } from '../context/theme.context';
+import { CartContext } from '../context/cart.context';
 
-export default function Cart({productList}) {
-
-    const {dark} = React.useContext(ThemeContext);
+export default function Cart() {
+     
+    const {dark} = useContext(ThemeContext);
     const theme = createTheme({
         colorSchemes: {
           dark: dark,
         },
       });
 
-  return (
-    <ThemeProvider theme={theme}>
-    <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {productList.map((value, index) => {
-        return (
-          <ListItem
-            key={value}
-            disablePadding
-          >
-            <ListItemButton onClick={() => {selectItemToEdit(value, index)}}>
-              <ListItemAvatar>
-                <Avatar
-                  alt={`Avatar`}
-                  src={value.Image}
-                />
-              </ListItemAvatar>
-              <ListItemText primary={value.Title} />
-              <ListItemText primary={value.Price + '€'} />
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
-    </List>
-    </ThemeProvider>
-  );
+    const {productSet} = useContext(CartContext);
+
+    return (
+        <ThemeProvider theme={theme}>
+            <Card sx={{ maxWidth: 345 }}>
+                <CardHeader title={'Order Details'} />
+            <CardContent>
+                <Typography variant="body2" sx={{ color: 'text.secondary', marginTop: 1.5 }}>
+                </Typography>
+                <Typography variant="body1" sx={{ color: 'text.primary', marginTop: 1.5  }}>
+            
+                </Typography>
+            </CardContent>
+            </Card>
+        </ThemeProvider>
+    );
 }
