@@ -17,6 +17,9 @@ export default function SellerProducts({productList}) {
         colorSchemes: {
           dark: dark,
         },
+        palette: {
+            mode: dark?'dark' : 'light'
+        }
       });
 
     const [checkBox, setCheckbox] = React.useState(-1);

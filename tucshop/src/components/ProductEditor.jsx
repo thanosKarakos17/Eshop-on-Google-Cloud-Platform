@@ -17,6 +17,9 @@ export default function ProductEditor() {
         colorSchemes: {
           dark: dark,
         },
+        palette: {
+            mode: dark?'dark' : 'light'
+        }
       });
 
     const {title: curTitle, description: curDescription, image: curImage, price: curPrice} = useContext(EditProductContext);

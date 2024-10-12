@@ -15,6 +15,9 @@ export default function ProductCreation() {
         colorSchemes: {
           dark: dark,
         },
+        palette: {
+            mode: dark?'dark' : 'light'
+        }
       });
 
     const [uploadNotReady, setUploadNotReady] = useState(true);

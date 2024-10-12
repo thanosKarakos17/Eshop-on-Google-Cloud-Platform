@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ThemeContext } from '../context/theme.context';
-import { CartContext } from '../context/cart.context';
+//import { CartContext } from '../context/cart.context';
 
 export default function Cart() {
      
@@ -14,9 +14,12 @@ export default function Cart() {
         colorSchemes: {
           dark: dark,
         },
+        palette: {
+            mode: dark?'dark' : 'light'
+        }
       });
 
-    const {productSet} = useContext(CartContext);
+    //const {productSet} = useContext(CartContext);
 
     return (
         <ThemeProvider theme={theme}>

@@ -9,8 +9,8 @@ export default function Main(){
     return(
         <div className='Main'>
             {/*<Products productList={PRODUCTS}/>*/}
-            {/*<SellerTools/>*/}
-            <Cart/>
+            <SellerTools/>
+            {/*<Cart/>*/}
         </div>
     );
 }

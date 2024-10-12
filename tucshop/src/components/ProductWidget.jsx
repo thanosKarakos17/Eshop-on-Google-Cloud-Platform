@@ -17,6 +17,9 @@ export default function ProductWidget({Title, Image, Description, Price}) {
         colorSchemes: {
           dark: dark,
         },
+        palette: {
+            mode: dark?'dark' : 'light'
+        }
       });
 
     return (
