@@ -7,10 +7,9 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
 import { ThemeContext } from '../context/theme.context';
-import { EditProductContext } from '../context/editProduct.context';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-export default function SellerProducts({productList}) {
+export default function Cart({productList}) {
 
     const {dark} = React.useContext(ThemeContext);
     const theme = createTheme({
@@ -19,26 +18,6 @@ export default function SellerProducts({productList}) {
         },
       });
 
-    const [checkBox, setCheckbox] = React.useState(-1);
-    const {setTitle, setDescription, setImage, setPrice} = React.useContext(EditProductContext);
-
-    const selectItemToEdit = (value, index) => {
-        setCheckbox(checkBox === index?-1:index);
-        setTitle(value.Title);
-        setImage(value.Image);
-        setDescription(value.Description);
-        setPrice(value.Price);
-    }
-
-    React.useEffect(() => {
-      if(checkBox === -1){
-        setTitle(null);
-        setImage(null);
-        setDescription(null);
-        setPrice(null);
-      }
-    }, [checkBox]);
-
   return (
     <ThemeProvider theme={theme}>
     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -46,12 +25,6 @@ export default function SellerProducts({productList}) {
         return (
           <ListItem
             key={value}
-            secondaryAction={
-              <Checkbox
-                edge="end"
-                checked={checkBox === index}
-              />
-            }
             disablePadding
           >
             <ListItemButton onClick={() => {selectItemToEdit(value, index)}}>

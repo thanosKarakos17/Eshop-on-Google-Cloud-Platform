@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useRef, useState} from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -24,13 +24,27 @@ export default function ProductEditor() {
     const [price, setPrice] = useState(curPrice || '');
     const [description, setDescription] = useState(curDescription || '');
     const [title, setTitle] = useState(curTitle || '');
+    const imageInputRef = useRef();
 
     useEffect(() => {
         setTitle(curTitle || '');  // Reinitialize local state when context updates
         setDescription(curDescription || '');
         setImage(curImage || '');
         setPrice(curPrice || '');
+        imageInputRef.current.value='';
       }, [curTitle, curDescription, curImage, curPrice]);
+
+
+        const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result); // Convert image to base64 string for preview
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -39,6 +53,7 @@ export default function ProductEditor() {
             <CardContent>
                 <TextField
                 required
+                disabled={title===''}
                 label="Product Title"
                 value={title}
                 onChange={(e) => {setTitle(e.target.value)}}
@@ -51,16 +66,19 @@ export default function ProductEditor() {
                 <br/>
                 <label for='imager'>Upload New Image</label>
                 <input
+                    disabled={title===''}
+                    ref={imageInputRef}
                     type="file"
                     id='imager'
                     accept="image/*"
-                    onChange={(e) => {setImage(e.target.value)}}
+                    onChange={handleImageUpload}
                 ></input>
                 <Typography variant="body2" sx={{ color: 'text.secondary', marginTop: 1.5 }}>
                 <TextField
                 required
+                disabled={description===''}
                 label="Product Description"
-                defaultValue={curDescription}
+                value={description}
                 multiline
                 onChange={(e) => {setDescription(e.target.value)}}
                 />
@@ -69,13 +87,13 @@ export default function ProductEditor() {
                 <TextField
                 required
                 label="Price"
-                
+                disabled={price===''}
                 value={price}
                 onChange={(e) => {setPrice(e.target.value)}}
                 />
                 </Typography>
-                <Button variant="outlined" sx={{marginTop: 1.5 }}>Update</Button>
-                <Button variant="outlined" sx={{marginTop: 1.5, marginLeft: 1.5 }}>Remove</Button>
+                <Button variant="outlined" sx={{marginTop: 1.5 }} disabled={title===''}>Update</Button>
+                <Button variant="outlined" sx={{marginTop: 1.5, marginLeft: 1.5 }} disabled={title===''}>Remove</Button>
             </CardContent>
             </Card>
         </ThemeProvider>
