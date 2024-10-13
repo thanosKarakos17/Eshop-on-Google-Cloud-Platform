@@ -1,5 +1,6 @@
 export const PRODUCTS = [
     {
+        id: 1,
         Title: 'product title',
         Image: 'gamepadbuttons.jpg',
         Description: 'This impressive pizza is a perfect party dish and a fun meal to cook\
@@ -8,7 +9,8 @@ export const PRODUCTS = [
         Price: 21.99,
         Units: 100
     },
-    {
+    {   
+        id: 2,
         Title: 'product title',
         Image: 'gamepadbuttons.jpg',
         Description: 'This impressive pizza is a perfect party dish and a fun meal to cook\
@@ -17,7 +19,8 @@ export const PRODUCTS = [
         Price: 22.99,
         Units: 100
     },
-    {
+    {   
+        id: 3,
         Title: 'product title',
         Image: 'gamepadbuttons.jpg',
         Description: 'This impressive pizza is a perfect party dish and a fun meal to cook\
@@ -26,7 +29,8 @@ export const PRODUCTS = [
         Price: 23.99,
         Units: 100
     },
-    {
+    {   
+        id: 4,
         Title: 'product title',
         Image: 'gamepadbuttons.jpg',
         Description: 'This impressive pizza is a perfect party dish and a fun meal to cook\

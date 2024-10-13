@@ -9,8 +9,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ThemeContext } from '../context/theme.context';
 import { Button } from '@mui/material';
+import { CartContext } from '../context/cart.context';
 
-export default function ProductWidget({Title, Image, Description, Price}) {
+export default function ProductWidget({productData}) {
     
     const {dark} = React.useContext(ThemeContext);
     const theme = createTheme({
@@ -22,25 +23,27 @@ export default function ProductWidget({Title, Image, Description, Price}) {
         }
       });
 
+    const {addToCart} = React.useContext(CartContext);
+
     return (
         <ThemeProvider theme={theme}>
             <Card sx={{ maxWidth: 345 }}>
-            <CardHeader title={Title} />
+            <CardHeader title={productData.Title} />
             <CardMedia
                 component="img"
                 maxHeight="194"
-                image={Image}
+                image={productData.Image}
             />
             <CardContent>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {Description}
+                    {productData.Description}
                 </Typography>
                 <Typography variant="body1" sx={{ color: 'text.primary' }}>
-                <b><h3>{Price} €</h3></b>
+                <b><h3>{productData.Price} €</h3></b>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <Button variant="outlined"><ShoppingCartIcon/> Add to cart</Button>
+                <Button variant="outlined" onClick={() => {addToCart(productData)}}><ShoppingCartIcon/> Add to cart</Button>
             </CardActions>
             </Card>
         </ThemeProvider>

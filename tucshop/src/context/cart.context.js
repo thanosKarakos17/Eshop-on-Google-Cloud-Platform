@@ -4,22 +4,22 @@ export const CartContext = createContext();
 
 export default function CartProvider({children}){
 
-    const [productSet, setProductSet] = useState({})
+    const [productSet, setProductSet] = useState([])
 
     const addToCart = (singleProduct) => {
-        //setProductSet(cart => [...cart, {product: singleProduct, quantity: 1}])
-        if(!productSet.singleProduct)setProductSet(prev => {
-            return {...prev, singleProduct: 1}
-        });
+        setProductSet(cart => [...cart, {product: singleProduct, quantity: 1}])
+    }
 
-        else{setProductSet(prev => {
-            const {existingProduct, ...rest} = prev;
-            return {...rest, existingProduct: prev[existingProduct] + 1}
-        });}
+    const showCart = () => {
+        const groupFn = ({product}) => {return product.id};
+        const groupCart = Object.values(Object.groupBy(productSet, groupFn));
+        const result = groupCart.map(arr => ({product: arr[0].product, quantity: arr.length}))
+        
+        return result
     }
 
     return(
-        <CartContext.Provider value={{productSet, addToCart}}>
+        <CartContext.Provider value={{productSet, addToCart, showCart}}>
             {children}
         </CartContext.Provider>
     );
