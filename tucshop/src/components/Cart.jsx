@@ -44,19 +44,27 @@ export default function Cart() {
     }
 
     function addAmount(product2, newAmount){
-        setCart(prev => prev.map(singlePr => product2.product.id === singlePr.product.id ? {product: singlePr.product, quantity: newAmount} : singlePr));
-        console.log(cart);
+        const newQuantity = newAmount <= product2.product.Units ? (newAmount < 0? 0: newAmount ): product2.quantity;
+        setCart(prev => prev.map(singlePr => product2.product.id === singlePr.product.id ? {product: singlePr.product, quantity: newQuantity} : singlePr));
     }
 
     const handleDownloadPDF = () => {
-        const input = document.getElementById('pdf-content');
-        // Specify the id of the element you want to convert to PDF
-        html2canvas(input).then((canvas) => {
-          const imgData = canvas.toDataURL('image/png');
-          const pdf = new jsPDF();
-          pdf.addImage(imgData, 'PNG', 0, 0);
-          pdf.save(`order-${new Date().toLocaleDateString()}`); 
-          // Specify the name of the downloaded PDF file
+
+        const filterCart = new Promise((resolve) => {
+            setCart(prev => prev.filter(singlePr => singlePr.quantity > 0));
+            resolve();
+        });
+
+        filterCart.then(() => {
+            const input = document.getElementById('pdf-content');
+            // Specify the id of the element you want to convert to PDF
+            html2canvas(input).then((canvas) => {
+              const imgData = canvas.toDataURL('image/png');
+              const pdf = new jsPDF();
+              pdf.addImage(imgData, 'PNG', 0, 0);
+              pdf.save(`order-${new Date().toLocaleDateString()}`); 
+              // Specify the name of the downloaded PDF file
+            });
         });
       };
 
@@ -82,7 +90,7 @@ export default function Cart() {
                     <ListItemText primary={cartProduct.product.Title} />
                     <ListItemText primary={cartProduct.product.Price + '€'} />
                     <ListItemText primary={`x ${cartProduct.quantity}`} />
-                    <TextField type='number' variant='standard' label='quantity' value={cartProduct.quantity}
+                    <TextField type='number' variant='standard' label='change quantity' value={cartProduct.quantity}
                     slotProps={{
                         inputLabel: {
                           shrink: true,
@@ -93,7 +101,7 @@ export default function Cart() {
                 </ListItem>
                  ))}
                 </List>
-                {showCart().length > 0 &&
+                {cart.length > 0 &&
                 (
                 <>
                 <Typography>
@@ -110,7 +118,7 @@ export default function Cart() {
                 color="primary"
                 startIcon={<CreditCardIcon/>}
                 onClick={handleDownloadPDF}
-                disabled={showCart().length < 1}
+                disabled={cart.length < 1 || (() => {let x = true;cart.forEach(singlePr => {if(singlePr.quantity !== 0)x = false;});return x;})()}
             >
                 Purchase
             </Button>

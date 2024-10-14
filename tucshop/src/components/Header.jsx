@@ -17,10 +17,6 @@ export default function Header(){
     const {productSet} = useContext(CartContext);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log(productSet);
-    }, [productSet]);
-
     return(
         <div className='Header'>
             <Search/>
