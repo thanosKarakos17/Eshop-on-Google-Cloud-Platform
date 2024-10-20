@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  product_db:
+    image: mongo:3.6.19-xenial
+    container_name: product_db
+    ports:
+      - "27017:27017"
