@@ -23,7 +23,7 @@ export default function SellerProducts({productList}) {
       });
 
     const [checkBox, setCheckbox] = React.useState(-1);
-    const {setTitle, setDescription, setImage, setPrice} = React.useContext(EditProductContext);
+    const {setTitle, setDescription, setImage, setPrice, setUnits, setId} = React.useContext(EditProductContext);
 
     const selectItemToEdit = (value, index) => {
         setCheckbox(checkBox === index?-1:index);
@@ -31,6 +31,8 @@ export default function SellerProducts({productList}) {
         setImage(value.Image);
         setDescription(value.Description);
         setPrice(value.Price);
+        setUnits(value.Units);
+        setId(value['_id']);
     }
 
     React.useEffect(() => {
@@ -39,6 +41,8 @@ export default function SellerProducts({productList}) {
         setImage(null);
         setDescription(null);
         setPrice(null);
+        setUnits(null);
+        setId(null);
       }
     }, [checkBox]);
 

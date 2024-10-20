@@ -22,11 +22,12 @@ export default function ProductEditor() {
         }
       });
 
-    const {title: curTitle, description: curDescription, image: curImage, price: curPrice} = useContext(EditProductContext);
+    const {title: curTitle, description: curDescription, image: curImage, price: curPrice, units: curUnits, id} = useContext(EditProductContext);
     const [image, setImage] = useState(curImage || '');
     const [price, setPrice] = useState(curPrice || '');
     const [description, setDescription] = useState(curDescription || '');
     const [title, setTitle] = useState(curTitle || '');
+    const [units, setUnits] = useState(curUnits || '');
     const imageInputRef = useRef();
 
     useEffect(() => {
@@ -34,8 +35,9 @@ export default function ProductEditor() {
         setDescription(curDescription || '');
         setImage(curImage || '');
         setPrice(curPrice || '');
+        setUnits(curUnits || '');
         imageInputRef.current.value='';
-      }, [curTitle, curDescription, curImage, curPrice]);
+      }, [curTitle, curDescription, curImage, curPrice, curUnits]);
 
 
         const handleImageUpload = (e) => {
@@ -48,6 +50,31 @@ export default function ProductEditor() {
             reader.readAsDataURL(file);
         }
     };
+
+    async function handleRemove(e){
+        e.preventDefault();
+        await fetch(`http://localhost:5000/products/${id}`, {
+            method: 'DELETE'
+        });
+    }
+
+    async function handleUpdate(e){
+        e.preventDefault();
+
+        const data = {
+            Title: title,
+            Image: image,
+            Description: description,
+            Price: Number(price),
+            Units: Number(units)
+        };
+
+        await fetch(`http://localhost:5000/products/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -95,8 +122,17 @@ export default function ProductEditor() {
                 onChange={(e) => {setPrice(e.target.value)}}
                 />
                 </Typography>
-                <Button variant="outlined" sx={{marginTop: 1.5 }} disabled={title===''}>Update</Button>
-                <Button variant="outlined" sx={{marginTop: 1.5, marginLeft: 1.5 }} disabled={title===''}>Remove</Button>
+                <Typography variant="body1" sx={{ color: 'text.primary', marginTop: 1.5  }}>
+                <TextField
+                required
+                label="Quantity"
+                disabled={units===''}
+                value={units}
+                onChange={(e) => {setUnits(e.target.value)}}
+                />
+                </Typography>
+                <Button variant="outlined" sx={{marginTop: 1.5 }} disabled={title===''} onClick={async (e) => await handleUpdate(e)}>Update</Button>
+                <Button variant="outlined" sx={{marginTop: 1.5, marginLeft: 1.5 }} disabled={title===''} onClick={async (e) => await handleRemove(e)}>Remove</Button>
             </CardContent>
             </Card>
         </ThemeProvider>
