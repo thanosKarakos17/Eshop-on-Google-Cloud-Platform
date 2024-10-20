@@ -1,5 +1,6 @@
 const express = require('express');
 const Products = require('../models/products');
+const mongo = require('mongoose');
 
 const router = express.Router();
 
@@ -12,19 +13,18 @@ router.get('/', async (req, res) => {
         res.status(500).json({message: err.message});
     }
 });
-/*
+
 router.get('/:id', async (req, res) => {
     try{
-        const product = await Products.find({"_id": req.params.id});
+        const product = await Products.find({"_id": new mongo.Types.ObjectId(req.params.id)});
         res.status(200).json(product);
     }
     catch(err){
         res.json({message: err.message});
     }
-});*/
+});
 
 router.get('/title', async (req, res) => {
-    console.log(req)
     try{
         const product = await Products.find({"Title": req.query.title});
         res.status(200).json(product);
@@ -50,6 +50,34 @@ router.post('/', async (req, res) => {
         res.status(400).json({message: err.message});
     }
 
+});
+
+router.put('/:id', async (req, res) => {
+    const item = {
+        Title: req.body.Title,
+        Image: req.body.Image,
+        Description: req.body.Description,
+        Price: req.body.Price,
+        Units: req.body.Units
+    };
+
+    try{
+        const updatedProduct = await Products.updateOne({_id: req.params.id}, {$set: item});
+        res.status(200).json(updatedProduct);
+    }
+    catch(err){
+        res.status(500).json({message: err.message});
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try{
+        const deletedProduct = await Products.deleteOne({_id: req.params.id});
+        res.status(200).json(deletedProduct);
+    }
+    catch(err){
+        res.status(500).json({message: err.message});
+    }
 });
 
 module.exports = router;
