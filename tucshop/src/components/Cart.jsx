@@ -45,7 +45,7 @@ export default function Cart() {
 
     function addAmount(product2, newAmount){
         const newQuantity = newAmount <= product2.product.Units ? (newAmount < 0? 0: newAmount ): product2.quantity;
-        setCart(prev => prev.map(singlePr => product2.product.id === singlePr.product.id ? {product: singlePr.product, quantity: newQuantity} : singlePr));
+        setCart(prev => prev.map(singlePr => product2.product['_id'] === singlePr.product['_id'] ? {product: singlePr.product, quantity: newQuantity} : singlePr));
     }
 
     const handleDownloadPDF = () => {

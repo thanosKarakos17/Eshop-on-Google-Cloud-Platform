@@ -27,14 +27,18 @@ export default function ProductWidget({productData}) {
 
     return (
         <ThemeProvider theme={theme}>
-            <Card sx={{ maxWidth: 345 }}>
+            <Card sx={{ maxWidth: 345,
+                        height: '100%', // Ensures all cards are the same height
+                        display: 'flex',
+                        flexDirection: 'column', // Makes content stack vertically
+                        justifyContent: 'space-between'}} >
             <CardHeader title={productData.Title} />
             <CardMedia
                 component="img"
                 maxHeight="194"
                 image={productData.Image}
             />
-            <CardContent>
+            <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {productData.Description}
                 </Typography>

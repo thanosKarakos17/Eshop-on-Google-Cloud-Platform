@@ -12,7 +12,7 @@ export default function CartProvider({children}){
     }
 
     const showCart = () => {
-        const groupFn = ({product}) => {return product.id};
+        const groupFn = ({product}) => {return product['_id']};
         const groupCart = Object.values(Object.groupBy(productSet, groupFn));
         const result = groupCart.map(arr => ({product: arr[0].product, quantity: arr.length}))
         
