@@ -14,9 +14,9 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/title', async (req, res) => {
     try{
-        const product = await Products.find({"_id": new mongo.Types.ObjectId(req.params.id)});
+        const product = await Products.find({"Title": req.query.title});
         res.status(200).json(product);
     }
     catch(err){
@@ -24,9 +24,9 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.get('/title', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try{
-        const product = await Products.find({"Title": req.query.title});
+        const product = await Products.find({"_id": new mongo.Types.ObjectId(req.params.id)});
         res.status(200).json(product);
     }
     catch(err){
