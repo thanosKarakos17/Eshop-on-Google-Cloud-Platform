@@ -10,10 +10,10 @@ export default function Products(){
 
     useEffect(() => {
         if(titleSearch !== ''){
-            fetch(`http://localhost:5000/products/title?title=${titleSearch}`).then(res => res.json()).then(res => setProductList(res));
+            fetch(`${global.config.PRODUCT_URL}/title?title=${titleSearch}`).then(res => res.json()).then(res => setProductList(res));
         }
         else{
-            fetch('http://localhost:5000/products').then(res => res.json()).then(res => setProductList(res));
+            fetch(`${global.config.PRODUCT_URL}`).then(res => res.json()).then(res => setProductList(res));
         }
     }, [titleSearch]);
 

@@ -64,7 +64,7 @@ export default function ProductCreation() {
         };
     
         try {
-            const response = await fetch('http://localhost:5000/products/', {
+            const response = await fetch(`${global.config.PRODUCT_URL}/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -81,6 +81,8 @@ export default function ProductCreation() {
         } catch (error) {
             console.error("There was an error with the upload:", error);
         }
+
+        setTimeout(clearFields, 1500);
     }
     
 

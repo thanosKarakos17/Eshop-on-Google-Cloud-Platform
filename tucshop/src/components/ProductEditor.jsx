@@ -53,9 +53,11 @@ export default function ProductEditor() {
 
     async function handleRemove(e){
         e.preventDefault();
-        await fetch(`http://localhost:5000/products/${id}`, {
+        await fetch(`${global.config.PRODUCT_URL}/${id}`, {
             method: 'DELETE'
         });
+
+        window.location.reload();
     }
 
     async function handleUpdate(e){
@@ -69,11 +71,13 @@ export default function ProductEditor() {
             Units: Number(units)
         };
 
-        await fetch(`http://localhost:5000/products/${id}`, {
+        await fetch(`${global.config.PRODUCT_URL}/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
+
+        window.location.reload();
     }
 
     return (

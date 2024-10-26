@@ -5,6 +5,7 @@ import App from './App';
 import ThemeProvider from './context/theme.context';
 import CartProvider from './context/cart.context';
 import SearchProductProvider from './context/search.context';
+import './config';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

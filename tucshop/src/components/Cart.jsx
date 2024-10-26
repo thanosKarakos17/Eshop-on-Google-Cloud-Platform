@@ -29,9 +29,12 @@ export default function Cart() {
         }
       });
 
-    const {showCart} = useContext(CartContext);
+    const {showCart, setProductSet} = useContext(CartContext);
     const [cart, setCart] = useState(showCart());
-    
+
+    useEffect(() => {
+        setProductSet(cart);
+    }, [cart]);
 
     function totalCost(){
         let res = 0;
@@ -46,6 +49,12 @@ export default function Cart() {
     function addAmount(product2, newAmount){
         const newQuantity = newAmount <= product2.product.Units ? (newAmount < 0? 0: newAmount ): product2.quantity;
         setCart(prev => prev.map(singlePr => product2.product['_id'] === singlePr.product['_id'] ? {product: singlePr.product, quantity: newQuantity} : singlePr));
+    }
+
+    function sendOrder(){
+        const products = cart.map(prev => ({title: prev.product.Title, amount: prev.quantity, id: prev.product['_id']}));
+        const order = {Products: products,Total_Price: totalCost().toFixed(2), Status: 'Pending'};
+        console.log(order);
     }
 
     const handleDownloadPDF = () => {
@@ -64,6 +73,7 @@ export default function Cart() {
               pdf.addImage(imgData, 'PNG', 0, 0);
               pdf.save(`order-${new Date().toLocaleDateString()}`); 
               // Specify the name of the downloaded PDF file
+              sendOrder();
             });
         });
       };
