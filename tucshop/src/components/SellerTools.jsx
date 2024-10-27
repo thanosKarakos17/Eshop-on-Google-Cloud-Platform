@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export default function SellerTools(){
     const [productList, setProductList] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5000/products/').then(res => res.json()).then(res => setProductList(res));
+        fetch(`${global.config.PRODUCT_URL}/`).then(res => res.json()).then(res => setProductList(res));
     }, []);
 
     return(

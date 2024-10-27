@@ -82,7 +82,7 @@ export default function ProductCreation() {
             console.error("There was an error with the upload:", error);
         }
 
-        setTimeout(clearFields, 1500);
+        setTimeout(clearFields, 500);
     }
     
 

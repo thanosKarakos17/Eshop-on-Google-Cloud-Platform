@@ -9,7 +9,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'id', headerName: 'ID', width: 290 },
   {
     field: 'cost',
     headerName: 'Total Cost',
@@ -32,11 +32,6 @@ const columns = [
   }
 ];
 
-const rows = [
-  { id: 1, cost: 150, products: 4, status: 'Pending'},
-  { id: 2, cost: 14.5, products: 1, status: 'Pending' }
-];
-
 export default function Orders() {
 
     const {dark} = React.useContext(ThemeContext);
@@ -50,6 +45,22 @@ export default function Orders() {
       });
 
       const [selectedOrder, setSelectedOrder] = React.useState([]);
+      const [rows, setRows] = React.useState([]);
+
+      React.useEffect(() => {
+        fetch(`${global.config.ORDER_URL}/`).then(res => res.json()).then(res => fixRows(res));
+      });
+
+      const fixRows = (res) => {
+        let r = [];
+        res.forEach(order => {
+          let totAmount = 0;
+          order.Products.forEach(pr => {totAmount += pr.amount})
+          const data = {id: order['_id'], products: totAmount, cost: order.Total_Price, status: order.Status, ORDER: order};
+          r.push(data);
+        });
+        setRows(r.reverse());
+      }
 
   return (
     <ThemeProvider theme={theme}>
@@ -67,18 +78,18 @@ export default function Orders() {
         pageSizeOptions={[5]}
         checkboxSelection
         disableMultipleRowSelection
-        onRowSelectionModelChange={itm => setSelectedOrder(itm)}
+        onRowSelectionModelChange={itm => setSelectedOrder(itm[0] ? rows.filter(row => row.id === itm[0])[0].ORDER.Products : [])}
       />
     </Box>
     <List dense sx={{ width: '100%', maxWidth: 700, bgcolor: 'background.paper' }}>
-      {selectedOrder.map(order => (<ListItem
+      {selectedOrder.map(singleProduct => (<ListItem
           disablePadding
           divider 
       >
           <ListItemButton>
-          <ListItemText primary={'cartProduct.product.Title'} />
-          <ListItemText primary={'cartProduct.product.Price' + '€'} />
-          <ListItemText primary={`x cartProduct.quantity`} />
+          <ListItemText primary={singleProduct.title} />
+          <ListItemText primary={`ID: ${singleProduct.id}`} />
+          <ListItemText primary={`x ${singleProduct.amount}`} />
           </ListItemButton>
       </ListItem>))}
       </List>

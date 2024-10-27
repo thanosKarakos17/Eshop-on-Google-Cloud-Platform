@@ -51,13 +51,31 @@ export default function Cart() {
         setCart(prev => prev.map(singlePr => product2.product['_id'] === singlePr.product['_id'] ? {product: singlePr.product, quantity: newQuantity} : singlePr));
     }
 
-    function sendOrder(){
-        const products = cart.map(prev => ({title: prev.product.Title, amount: prev.quantity, id: prev.product['_id']}));
+    async function sendOrder(){
+        const products = [...cart].filter(singlePr => singlePr.quantity > 0)
+                             .map(prev => ({title: prev.product.Title, amount: prev.quantity, id: prev.product['_id']}));
         const order = {Products: products,Total_Price: totalCost().toFixed(2), Status: 'Pending'};
-        console.log(order);
+        try {
+            const response = await fetch(`${global.config.ORDER_URL}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(order)
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            console.log("Success:", result);
+        } catch (error) {
+            console.error("There was an error with the upload:", error);
+        }
     }
 
-    const handleDownloadPDF = () => {
+    const handleDownloadPDF = async () => {
 
         const filterCart = new Promise((resolve) => {
             setCart(prev => prev.filter(singlePr => singlePr.quantity > 0));
@@ -73,10 +91,21 @@ export default function Cart() {
               pdf.addImage(imgData, 'PNG', 0, 0);
               pdf.save(`order-${new Date().toLocaleDateString()}`); 
               // Specify the name of the downloaded PDF file
-              sendOrder();
             });
         });
       };
+
+      const handlePurchase = () => {
+        const pdf = new Promise((resolve) => {
+            handleDownloadPDF();
+            window.location.reload();
+            resolve();
+        });
+
+        pdf.then(() => {
+            sendOrder();
+        })
+      }
 
     return (
         <ThemeProvider theme={theme}>
@@ -127,7 +156,7 @@ export default function Cart() {
                 variant="contained"
                 color="primary"
                 startIcon={<CreditCardIcon/>}
-                onClick={handleDownloadPDF}
+                onClick={handlePurchase}
                 disabled={cart.length < 1 || (() => {let x = true;cart.forEach(singlePr => {if(singlePr.quantity !== 0)x = false;});return x;})()}
             >
                 Purchase
