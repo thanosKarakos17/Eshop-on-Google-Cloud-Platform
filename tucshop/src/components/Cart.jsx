@@ -29,11 +29,12 @@ export default function Cart() {
         }
       });
 
-    const {showCart, setProductSet} = useContext(CartContext);
+    const {showCart, setProductSet, saveCart} = useContext(CartContext);
     const [cart, setCart] = useState(showCart());
 
     useEffect(() => {
         setProductSet(cart);
+        if(cart.length >= 1){saveCart(cart);}
     }, [cart]);
 
     function totalCost(){
@@ -98,11 +99,11 @@ export default function Cart() {
       const handlePurchase = () => {
         const pdf = new Promise((resolve) => {
             handleDownloadPDF();
-            window.location.reload();
             resolve();
         });
 
         pdf.then(() => {
+            setCart([]);
             sendOrder();
         })
       }

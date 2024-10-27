@@ -87,7 +87,6 @@ export default function ProductEditor() {
             <CardContent>
                 <TextField
                 required
-                disabled={title===''}
                 label="Product Title"
                 value={title}
                 onChange={(e) => {setTitle(e.target.value)}}
@@ -100,7 +99,6 @@ export default function ProductEditor() {
                 <br/>
                 <label for='imager'>Upload New Image</label>
                 <input
-                    disabled={title===''}
                     ref={imageInputRef}
                     type="file"
                     id='imager'
@@ -110,7 +108,6 @@ export default function ProductEditor() {
                 <Typography variant="body2" sx={{ color: 'text.secondary', marginTop: 1.5 }}>
                 <TextField
                 required
-                disabled={description===''}
                 label="Product Description"
                 value={description}
                 multiline
@@ -121,7 +118,6 @@ export default function ProductEditor() {
                 <TextField
                 required
                 label="Price"
-                disabled={price===''}
                 value={price}
                 onChange={(e) => {setPrice(e.target.value)}}
                 />
@@ -130,7 +126,6 @@ export default function ProductEditor() {
                 <TextField
                 required
                 label="Quantity"
-                disabled={units===''}
                 value={units}
                 onChange={(e) => {setUnits(e.target.value)}}
                 />
