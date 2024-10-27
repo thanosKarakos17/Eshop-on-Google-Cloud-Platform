@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    console.log(req.body);
     const order = new Orders({
         Products: req.body.Products,
         Status: req.body.Status,
