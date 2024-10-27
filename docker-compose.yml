@@ -6,3 +6,9 @@ services:
     container_name: product_db
     ports:
       - "27017:27017"
+      
+  order_db:
+    image: mongo:3.6.19-xenial
+    container_name: order_db
+    ports:
+      - "27018:27017"
