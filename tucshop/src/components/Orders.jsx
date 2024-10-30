@@ -3,13 +3,13 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ThemeContext } from '../context/theme.context';
-import { List, TextField } from '@mui/material';
+import { List } from '@mui/material';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 290 },
+  { field: 'id', headerName: 'ORDER ID', width: 290 },
   {
     field: 'cost',
     headerName: 'Total Cost',
@@ -87,7 +87,7 @@ export default function Orders() {
           divider 
       >
           <ListItemButton>
-          <ListItemText primary={singleProduct.title} />
+          <ListItemText primary={`LABEL:  '${singleProduct.title}'`} />
           <ListItemText primary={`ID: ${singleProduct.id}`} />
           <ListItemText primary={`x ${singleProduct.amount}`} />
           </ListItemButton>

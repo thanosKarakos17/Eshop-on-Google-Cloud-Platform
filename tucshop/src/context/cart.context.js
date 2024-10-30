@@ -9,13 +9,13 @@ export default function CartProvider({children}){
     const CART_KEY = 'cart';
 
     useEffect(() => {
-        const savedCart = JSON.parse(localStorage.getItem(CART_KEY));
+        const savedCart = JSON.parse(sessionStorage.getItem(CART_KEY));
         if(savedCart !== null){setProductSet(savedCart);}
         return ;
     }, []);
 
     const saveCart = (cart) => {
-        localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        sessionStorage.setItem(CART_KEY, JSON.stringify(cart));
     }
 
     const addToCart = (singleProduct) => {
@@ -25,8 +25,9 @@ export default function CartProvider({children}){
     const showCart = () => {
         const groupFn = ({product}) => {return product['_id']};
         const groupCart = Object.values(Object.groupBy(productSet, groupFn));
-        const result = groupCart.map(arr => ({product: arr[0].product, quantity: arr[0].quantity | arr.length}));
-        
+        const quantityFn = (arr) => {return arr.reduce((acc, item) => acc + item.quantity, 0)};
+        const result = groupCart.map(arr => ({product: arr[0].product, quantity: quantityFn(arr)}));
+
         return result
     }
 
