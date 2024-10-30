@@ -6,9 +6,70 @@ services:
     container_name: product_db
     ports:
       - "27017:27017"
+    networks:
+    - mern-app
       
   order_db:
     image: mongo:3.6.19-xenial
     container_name: order_db
     ports:
       - "27018:27017"
+    networks:
+      - mern-app
+
+  products_service:
+    build:
+      context: ./tucshop-product
+      dockerfile: Dockerfile
+    container_name: products_service
+    env_file: ./tucshop-product/.env
+    command: npm start
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+    - ./tucshop-product:/app
+    - /app/node_modules
+    depends_on:
+      - product_db
+    networks:
+      - mern-app
+  
+  orders_service:
+    build:
+      context: ./tucshop-order
+      dockerfile: Dockerfile
+    container_name: orders_service
+    env_file: ./tucshop-order/.env
+    command: npm start
+    restart: always
+    ports:
+      - "5005:5005"
+    volumes:
+    - ./tucshop-order:/app
+    - /app/node_modules
+    depends_on:
+      - order_db
+    networks:
+      - mern-app
+  
+  frontend:
+    build:
+      context: ./tucshop
+      dockerfile: Dockerfile
+    container_name: tucshop_front
+    restart: always
+    ports:
+    - "3000:80"
+    volumes:
+    - ./tucshop:/app
+    - /app/node_modules
+    depends_on:
+      - products_service
+      - orders_service
+    networks:
+      - mern-app
+
+networks:
+  mern-app:
+    driver: bridge
