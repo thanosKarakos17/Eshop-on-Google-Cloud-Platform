@@ -17,6 +17,54 @@ services:
     networks:
       - mern-app
 
+  keycloak_db:
+    image: mysql
+    container_name: keycloak_db
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    environment:
+      # The user, password and database that Keycloak
+      # is going to create and use
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: keycloak
+      MYSQL_DATABASE: keycloak_db
+      # Self-Explanatory
+      MYSQL_ROOT_PASSWORD: admin
+    volumes:
+      - keycloak-mysql-volume:/var/lib/mysql
+      - ./keycloak.sql:/docker-entrypoint-initdb.d/init.sql # Mount the SQL file
+    networks:
+      - keycloak-mysql-network
+
+  keycloak_authentication_service:
+    image: quay.io/keycloak/keycloak:26.0.5
+    ports:
+      - 8182:8080
+    restart: unless-stopped
+    environment:
+      # User and password for the Administration Console
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT: false
+      # KC_PROXY: edge
+      KC_DB: mysql
+      KC_DB_URL_HOST: keycloak_db
+      KC_DB_URL_PORT: 3306
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_DB_URL_DATABASE: keycloak_db
+    depends_on:
+      - keycloak_db
+    command: start-dev
+    volumes:
+      - keycloak-realm-data:/opt/jboss/keycloak/standalone/data 
+    networks:
+      - keycloak-mysql-network
+
   products_service:
     build:
       context: ./tucshop-product
@@ -53,23 +101,29 @@ services:
     networks:
       - mern-app
   
-  frontend:
-    build:
-      context: ./tucshop
-      dockerfile: Dockerfile
-    container_name: tucshop_front
-    restart: always
-    ports:
-    - "3000:80"
-    volumes:
-    - ./tucshop:/app
-    - /app/node_modules
-    depends_on:
-      - products_service
-      - orders_service
-    networks:
-      - mern-app
+  # frontend:
+  #   build:
+  #     context: ./tucshop
+  #     dockerfile: Dockerfile
+  #   container_name: tucshop_front
+  #   restart: always
+  #   ports:
+  #   - "3000:80"
+  #   volumes:
+  #   - ./tucshop:/app
+  #   - /app/node_modules
+  #   depends_on:
+  #     - products_service
+  #     - orders_service
+  #   networks:
+  #     - mern-app
 
 networks:
   mern-app:
+  keycloak-mysql-network:
+  default:
     driver: bridge
+
+volumes:
+  keycloak-mysql-volume:
+  keycloak-realm-data:
