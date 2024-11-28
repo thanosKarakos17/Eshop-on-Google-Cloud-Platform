@@ -6,11 +6,11 @@ import Orders from './Orders';
 import { Routes, Route} from "react-router-dom";
 
 
-export default function Main(){
+export default function Main({token}){
     return(
         <div className='Main'>
                 <Routes>
-                    <Route path='/' element={<Products />} />
+                    <Route path='/' element={<Products token={token}/>} />
                     <Route path='/orders' element={<Orders />} />
                     <Route path='/myproducts' element={<SellerTools/>}/>
                     <Route path='/cart' element={<Cart/>}/>

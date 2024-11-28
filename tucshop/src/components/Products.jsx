@@ -3,14 +3,20 @@ import '../styles/Products.scss';
 import { useContext, useEffect, useState } from "react";
 import { SearchProductContext } from "../context/search.context";
 
-export default function Products(){
+export default function Products({token}){
 
     const [productList, setProductList] = useState([]);
     const {titleSearch} = useContext(SearchProductContext);
 
     useEffect(() => {
         if(titleSearch !== ''){
-            fetch(`${global.config.PRODUCT_URL}/title?title=${titleSearch}`).then(res => res.json()).then(res => setProductList(res));
+            fetch(`${global.config.PRODUCT_URL}/title?title=${titleSearch}`,
+                {
+                    headers: {
+                        'authorization': `Bearer ${token}`
+                    }
+                }
+            ).then(res => res.json()).then(res => setProductList(res));
         }
         else{
             fetch(`${global.config.PRODUCT_URL}`).then(res => res.json()).then(res => setProductList(res));

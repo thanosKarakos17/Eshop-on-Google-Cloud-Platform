@@ -1,0 +1,99 @@
+.auth-page {
+    font-family: 'Roboto', sans-serif;
+    background: url("./keycloak-bg.png") no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+    .auth-card {
+      background: #ffffff;
+      width: 350px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+  
+      .auth-header {
+        background: #2c3e50;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+  
+        h1 {
+          font-size: 1.8rem;
+          margin: 0;
+        }
+      }
+  
+      .auth-body {
+        padding: 20px;
+        text-align: center;
+  
+        p {
+          margin-bottom: 20px;
+          font-size: 1rem;
+          color: #555;
+        }
+  
+        .auth-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+  
+          .btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: #ffffff;
+  
+            &.login {
+              background-color: #4caf50;
+  
+              &:hover {
+                background-color: #45a049;
+                transform: translateY(-2px);
+              }
+            }
+  
+            &.register {
+              background-color: #2196f3;
+  
+              &:hover {
+                background-color: #1976d2;
+                transform: translateY(-2px);
+              }
+            }
+  
+            &.guest {
+              background-color: #ff5722;
+  
+              &:hover {
+                background-color: #e64a19;
+                transform: translateY(-2px);
+              }
+            }
+          }
+        }
+      }
+  
+      .auth-footer {
+        text-align: center;
+        padding: 15px;
+        background: #eeeeee;
+        color: #888;
+  
+        p {
+          margin: 0;
+          font-size: 0.9rem;
+        }
+      }
+    }
