@@ -10,12 +10,12 @@ import useAuth from './auth/useAuth';
 export default function Content({log}){
 
     const {dark} = useContext(ThemeContext);
-    const {isLogin, token} = useAuth(log === 'login');
+    const {isLogin, token, userInfo, logout} = useAuth(log === 'login');
 
     return(
         <div className={`App-${dark ? 'dark' : 'light'}`}>
             <BrowserRouter>
-            <Header/>
+            <Header userInfo={userInfo} logout={logout}/>
             <Main token={token}/>
             </BrowserRouter>
         </div>

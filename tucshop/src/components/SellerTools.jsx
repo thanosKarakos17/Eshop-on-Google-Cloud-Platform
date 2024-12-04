@@ -5,17 +5,22 @@ import SellerProducts from "./SellerProducts";
 import EditProductProvider from "../context/editProduct.context";
 import { useEffect, useState } from "react";
 
-export default function SellerTools(){
+export default function SellerTools({token}){
     const [productList, setProductList] = useState([]);
     useEffect(() => {
-        fetch(`${global.config.PRODUCT_URL}/`).then(res => res.json()).then(res => setProductList(res));
-    }, []);
+        if(token !== null){
+            fetch(`${global.config.PRODUCT_URL}/username`,{
+                headers:{
+                    'authorization': `Bearer ${token}`
+                }
+            }).then(res => res.json()).then(res => setProductList(res));}
+    }, [token]);
 
     return(
         <div className='seller-container'>
-        <ProductCreation></ProductCreation>
+        <ProductCreation token={token}></ProductCreation>
         <EditProductProvider>
-            <ProductEditor/>
+            <ProductEditor token={token}/>
             <SellerProducts productList={productList}/>
         </EditProductProvider>
         </div>

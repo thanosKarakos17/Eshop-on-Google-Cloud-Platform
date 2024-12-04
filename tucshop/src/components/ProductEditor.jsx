@@ -10,7 +10,7 @@ import { EditProductContext } from '../context/editProduct.context';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 
-export default function ProductEditor() {
+export default function ProductEditor({token}) {
     
     const {dark} = useContext(ThemeContext);
     const theme = createTheme({
@@ -54,7 +54,10 @@ export default function ProductEditor() {
     async function handleRemove(e){
         e.preventDefault();
         await fetch(`${global.config.PRODUCT_URL}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 
+                'authorization': `Bearer ${token}`
+             }
         });
 
         window.location.reload();
@@ -73,7 +76,10 @@ export default function ProductEditor() {
 
         await fetch(`${global.config.PRODUCT_URL}/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${token}`
+             },
             body: JSON.stringify(data)
         });
 

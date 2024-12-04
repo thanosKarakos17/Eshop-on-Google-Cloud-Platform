@@ -10,10 +10,10 @@ export default function Main({token}){
     return(
         <div className='Main'>
                 <Routes>
-                    <Route path='/' element={<Products token={token}/>} />
-                    <Route path='/orders' element={<Orders />} />
-                    <Route path='/myproducts' element={<SellerTools/>}/>
-                    <Route path='/cart' element={<Cart/>}/>
+                    <Route path='/' element={<Products/>} />
+                    <Route path='/orders' element={<Orders token={token}/>} />
+                    <Route path='/myproducts' element={<SellerTools token={token}/>}/>
+                    <Route path='/cart' element={<Cart token={token}/>}/>
                 </Routes>
         </div>
     );

@@ -17,7 +17,7 @@ import {Button} from '@mui/material';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-export default function Cart() {
+export default function Cart({token}) {
      
     const {dark} = useContext(ThemeContext);
     const theme = createTheme({
@@ -60,7 +60,8 @@ export default function Cart() {
             const response = await fetch(`${global.config.ORDER_URL}/`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(order)
             });

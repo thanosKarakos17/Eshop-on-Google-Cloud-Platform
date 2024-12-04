@@ -8,7 +8,7 @@ import { ThemeContext } from '../context/theme.context';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 
-export default function ProductCreation() {
+export default function ProductCreation({token}) {
     
     const {dark} = useContext(ThemeContext);
     const theme = createTheme({
@@ -67,7 +67,8 @@ export default function ProductCreation() {
             const response = await fetch(`${global.config.PRODUCT_URL}/`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(data)
             });

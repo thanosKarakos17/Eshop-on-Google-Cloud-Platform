@@ -32,7 +32,7 @@ const columns = [
   }
 ];
 
-export default function Orders() {
+export default function Orders({token}) {
 
     const {dark} = React.useContext(ThemeContext);
     const theme = createTheme({
@@ -48,7 +48,14 @@ export default function Orders() {
       const [rows, setRows] = React.useState([]);
 
       React.useEffect(() => {
-        fetch(`${global.config.ORDER_URL}/`).then(res => res.json()).then(res => fixRows(res));
+        fetch(`${global.config.ORDER_URL}/`,
+          {
+            headers:
+              {
+                'authorization': `Bearer ${token}`
+              }
+          }
+        ).then(res => res.json()).then(res => fixRows(res));
       });
 
       const fixRows = (res) => {

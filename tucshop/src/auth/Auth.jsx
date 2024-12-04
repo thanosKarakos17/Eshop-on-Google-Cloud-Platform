@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import '../styles/Auth.scss';
 
 export default function Auth({proceedFunction, modeFunction}){
