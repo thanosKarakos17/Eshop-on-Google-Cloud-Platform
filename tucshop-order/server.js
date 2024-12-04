@@ -11,4 +11,5 @@ db.on('open', () => {console.log('connected to db');app.listen(5005, () => {cons
 app.use(express.json());
 app.use(cors());
 const productsRouter = require('./routes/orders');
-app.use('/orders', productsRouter);
+const authenticate = require('./authentication/authenticate');
+app.use('/orders', authenticate, productsRouter);

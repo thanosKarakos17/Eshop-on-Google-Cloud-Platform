@@ -14,11 +14,22 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/username', async (req, res) => {
+    try{
+        const order = await Orders.find({"Username": req.body.Username});
+        res.status(200).json(order);
+    }
+    catch(err){
+        res.json({message: err.message});
+    }
+});
+
 router.post('/', async (req, res) => {
     const order = new Orders({
         Products: req.body.Products,
         Status: req.body.Status,
-        Total_Price: req.body.Total_Price
+        Total_Price: req.body.Total_Price,
+        Username: req.body.Username
     });
     try{
         const newOrder = await order.save();

@@ -19,6 +19,10 @@ const orderSchema = new mongo.Schema({
     Total_Price: {
         type: Number,
         required: true
+    },
+    Username: {
+        type: String,
+        required: true
     }
 });
 
