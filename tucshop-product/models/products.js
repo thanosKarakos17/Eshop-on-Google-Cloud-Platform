@@ -21,6 +21,10 @@ const productSchema = new mongo.Schema({
         type: Number,
         required: false,
         default: 1
+    },
+    Username: {
+        type: String,
+        required: true
     }
 });
 

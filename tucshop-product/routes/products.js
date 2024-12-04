@@ -24,6 +24,17 @@ router.get('/title', async (req, res) => {
     }
 });
 
+router.get('/username', async (req, res) => {
+    try{
+        console.log(req.body.Username);
+        const product = await Products.find({"Username": req.body.Username});
+        res.status(200).json(product);
+    }
+    catch(err){
+        res.json({message: err.message});
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try{
         const product = await Products.find({"_id": new mongo.Types.ObjectId(req.params.id)});
@@ -40,7 +51,8 @@ router.post('/', async (req, res) => {
         Image: req.body.Image,
         Description: req.body.Description,
         Price: req.body.Price,
-        Units: req.body.Units
+        Units: req.body.Units,
+        Username: req.body.Username
     });
     try{
         const newProduct = await product.save();
@@ -58,7 +70,8 @@ router.put('/:id', async (req, res) => {
         Image: req.body.Image,
         Description: req.body.Description,
         Price: req.body.Price,
-        Units: req.body.Units
+        Units: req.body.Units,
+        Username: req.body.Username
     };
 
     try{

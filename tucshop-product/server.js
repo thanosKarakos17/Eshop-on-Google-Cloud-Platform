@@ -11,4 +11,5 @@ db.on('open', () => {console.log('connected to db');app.listen(5000, () => {cons
 app.use(express.json({ limit: '10mb' }));
 app.use(cors());
 const productsRouter = require('./routes/products');
-app.use('/products', productsRouter);
+const authenticate = require('./authentication/authenticate');
+app.use('/products', authenticate, productsRouter);
