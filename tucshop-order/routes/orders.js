@@ -1,6 +1,6 @@
 const express = require('express');
 const Orders = require('../models/orders');
-const mongo = require('mongoose');
+const kafka = require('../kafka_service/kafka');
 
 const router = express.Router();
 
@@ -33,6 +33,20 @@ router.post('/', async (req, res) => {
     });
     try{
         const newOrder = await order.save();
+        //send to kafka
+        const msg = {
+            Id: newOrder['_id'],
+            products: newOrder.Products
+        };
+        const [kafkaOrderId, kafkaOrderStatus] = await kafka.kafkaProducer(msg);
+        const kafkaOrder = new Orders({
+            Products: req.body.Products,
+            Status: kafkaOrderStatus,
+            Total_Price: req.body.Total_Price,
+            Username: req.body.Username
+        });
+        await kafkaOrder.save();
+
         res.status(201).json(newOrder);
     }
     catch(err){
