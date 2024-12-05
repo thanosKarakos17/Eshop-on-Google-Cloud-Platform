@@ -3,6 +3,7 @@ const express = require('express');
 const mongo = require('mongoose');
 const app = express();
 const cors = require('cors');
+const kafka = require('./kafka_service/kafka'); //initialize kafka consumer
 
 mongo.connect(process.env.MONGO_URL);
 const db = mongo.connection;
