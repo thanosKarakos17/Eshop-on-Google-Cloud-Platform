@@ -36,17 +36,10 @@ router.post('/', async (req, res) => {
         //send to kafka
         const msg = {
             Id: newOrder['_id'],
-            products: newOrder.Products
+            products: newOrder.Products.map(pr => {return {product_id: pr.id, amount: pr.amount}})
         };
-        const [kafkaOrderId, kafkaOrderStatus] = await kafka.kafkaProducer(msg);
-        const kafkaOrder = new Orders({
-            Products: req.body.Products,
-            Status: kafkaOrderStatus,
-            Total_Price: req.body.Total_Price,
-            Username: req.body.Username
-        });
-        await kafkaOrder.save();
-
+        
+        await kafka.kafkaProducer(msg);
         res.status(201).json(newOrder);
     }
     catch(err){
