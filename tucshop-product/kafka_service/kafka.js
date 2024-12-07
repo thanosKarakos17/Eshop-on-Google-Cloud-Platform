@@ -1,11 +1,12 @@
 const Products = require('../models/products');
 const { Kafka, Partitioners } = require('kafkajs');
+const mongo = require('mongoose');
 
 const handleProducts = async (orders)=>{
     try {
         //check if products amount is > 0
         for await (const obj of orders.products){
-            const data = await Products.find({"_id": obj.product_id});
+            const data = await Products.find({"_id": new mongo.Types.ObjectId(obj.product_id)});
 
             const quantity = data[0].Units;
             if(quantity && quantity < obj.amount){
@@ -14,7 +15,7 @@ const handleProducts = async (orders)=>{
         }
 
         for await (const obj of orders.products){
-            const data = await Products.find({"_id": obj.product_id});
+            const data = await Products.find({"_id": new mongo.Types.ObjectId(obj.product_id)});
 
             const newQuantity = data[0].Units - obj.amount;
             const item = {
@@ -25,7 +26,7 @@ const handleProducts = async (orders)=>{
                 Units: newQuantity,
                 Username: data.Username
             };
-            const update = await Products.updateOne({_id: req.params.id}, {$set: item});
+            const update = await Products.updateOne({_id: obj.product_id}, {$set: item});
         }
 
         return true
@@ -38,7 +39,7 @@ const handleProducts = async (orders)=>{
 ///////////////////////////////////////////////
 const kafka = new Kafka({
     clientId: 'products-app',
-    brokers: ['localhost:8097'],
+    brokers: ['kafka:19092'],
     retry: {
       initialRetryTime: 2000,
       retries: 5
@@ -78,11 +79,11 @@ const kafka = new Kafka({
           const result = await handleProducts(jsonMsg);
           
           if(result){
-            return [jsonMsg.Id, 'Success'];
+            return await sendOrders({orderId: jsonMsg.Id, status: 'Success'});
           }
   
           if(!result){
-            return [jsonMsg.Id, 'Reject'];
+            return await sendOrders({orderId: jsonMsg.Id, status: 'Reject'});
           }
   
         }
