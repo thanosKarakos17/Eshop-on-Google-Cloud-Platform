@@ -116,6 +116,7 @@ services:
       - kafka
     networks:
       - mern-app
+      - kafka
   
   orders_service:
     build:
@@ -135,6 +136,7 @@ services:
       - kafka
     networks:
       - mern-app
+      - kafka
   
   frontend:
     build:
