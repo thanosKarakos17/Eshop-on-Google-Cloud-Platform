@@ -73,20 +73,30 @@ export default function Header({userInfo, logout}){
         navigate('/');
         sessionStorage.setItem('isLoggedIn', false);
         sessionStorage.setItem('mode', '');
-        logout();
+        logoutRequest();
     }
+
+    async function logoutRequest(){
+        console.log(logout)
+        const data = new URLSearchParams();
+        data.append('refresh_token', logout);
+        data.append('client_id', global.config.KEYCLOAK_CLIENT);
+        data.append('client_secret', global.config.KEYCLOAK_CLIENT_SECRET);
+        const result = await fetch(`${global.config.KEYCLOAK_URL}/realms/${global.config.KEYCLOAK_REALM}/protocol/openid-connect/logout`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data
+        });
+        if(result.ok){window.location.reload()}
+      }
 
     function loginFunction(){
         sessionStorage.setItem('isLoggedIn', false);
         sessionStorage.setItem('mode', '');
-        const kc_client = new Keycloak({
-            url: global.config.KEYCLOAK_URL,
-            realm: global.config.KEYCLOAK_REALM,
-            clientId: global.config.KEYCLOAK_CLIENT
-        });
-        logoutFunction.current = () => kc_client.logout();
-        
-        kc_client.init({onLoad: "check-sso"}).then(res => kc_client.login());
+        navigate('/');
+        window.location.reload()
     }
 
     function AccountInfo(){

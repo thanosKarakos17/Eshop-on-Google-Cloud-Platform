@@ -6,6 +6,28 @@ const useAuth = (runOnce) => {
     const [token, setToken] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
 
+    
+
+    function exchangeAuthorizationCode(authorizationCode) {
+        const tokenEndpoint = `http://${global.config.KEYCLOAK_URL}/realms/${global.config.KEYCLOAK_REALM}/protocol/openid-connect/token`;
+    
+        const data = new URLSearchParams();
+        data.append('code', authorizationCode);
+        data.append('client_id', `${global.config.KEYCLOAK_CLIENT}`);
+        data.append('client_secret', `${global.config.KEYCLOAK_CLIENT_SECRET}`); // Confidential client secret
+        data.append('grant_type', 'authorization_code');
+    
+        // Fetch API to exchange the authorization code for an access token
+        fetch(tokenEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        })
+        .then(response => response.json())
+    }
+
     const logoutFunction = useRef(null);
 
     const isRun = useRef(false);
@@ -21,10 +43,12 @@ const useAuth = (runOnce) => {
                 });
                 logoutFunction.current = () => kc_client.logout();
                 
-                kc_client.init({onLoad: "login-required"})
+                kc_client.init({onLoad: "login-required", KeycloakResponseType: 'code'})
                 .then(res => {
                     if(res){
+                        setTimeout(() => {kc_client.updateToken(30)}, 3000)
                         setLogin(res);
+                        console.log(kc_client)
                         const token = kc_client.token;
                         setToken(token);
                         const userInfo = kc_client.tokenParsed;
