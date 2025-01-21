@@ -59,6 +59,8 @@ services:
     container_name: product_db
     ports:
       - "27017:27017"
+    volumes:
+      - product-db-data:/data/db
     networks:
     - mern-app
       
@@ -67,6 +69,8 @@ services:
     container_name: order_db
     ports:
       - "27018:27017"
+    volumes:
+      - order-db-data:/data/db
     networks:
       - mern-app
 
@@ -99,11 +103,11 @@ services:
       # User and password for the Administration Console
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: localhost
+      KC_HOSTNAME: 34.154.84.38
       KC_HOSTNAME_STRICT_HTTPS: false
       KC_HTTP_ENABLED: true
       KC_HOSTNAME_STRICT: false
-      # KC_PROXY: edge
+      KC_PROXY: edge
       KC_DB: mysql
       KC_DB_URL_HOST: keycloak_db
       KC_DB_URL_PORT: 3306
@@ -158,24 +162,24 @@ services:
       - mern-app
       - kafka
   
-  # frontend:
-  #   build:
-  #     context: ./tucshop
-  #     dockerfile: Dockerfile
-  #   container_name: tucshop_front
-  #   restart: always
-  #   ports:
-  #   - "3000:80"
-  #   volumes:
-  #   - ./tucshop:/app
-  #   - /app/node_modules
-  #   depends_on:
-  #     - products_service
-  #     - orders_service
-  #     - keycloak_authentication_service
-  #   networks:
-  #     - mern-app
-  #     - keycloak-mysql-network
+  frontend:
+    build:
+      context: ./tucshop
+      dockerfile: Dockerfile
+    container_name: tucshop_front
+    restart: always
+    ports:
+    - "3000:80"
+    volumes:
+    - ./tucshop:/app
+    - /app/node_modules
+    depends_on:
+      - products_service
+      - orders_service
+      - keycloak_authentication_service
+    networks:
+      - mern-app
+      - keycloak-mysql-network
 
 networks:
   mern-app:
@@ -187,3 +191,5 @@ networks:
 volumes:
   keycloak-mysql-volume:
   keycloak-realm-data:
+  product-db-data: 
+  order-db-data:

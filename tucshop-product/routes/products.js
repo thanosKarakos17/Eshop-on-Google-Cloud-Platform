@@ -54,6 +54,7 @@ router.post('/', async (req, res) => {
         Units: req.body.Units,
         Username: req.body.Username
     });
+
     try{
         const newProduct = await product.save();
         res.status(201).json(newProduct);

@@ -60,7 +60,7 @@ export default function ProductEditor({token}) {
              }
         });
 
-        window.location.reload();
+        alert('Product deleted refresh (and login) to see the changes');
     }
 
     async function handleUpdate(e){
@@ -83,7 +83,7 @@ export default function ProductEditor({token}) {
             body: JSON.stringify(data)
         });
 
-        window.location.reload();
+        alert('Product updated refresh (and login) to see the changes');
     }
 
     return (

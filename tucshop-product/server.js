@@ -11,6 +11,7 @@ const db = mongo.connection;
 db.on('open', () => {console.log('connected to db');app.listen(5000, () => {console.log('server started')})});
 app.use(express.json({ limit: '10mb' }));
 app.use(cors());
+app.options('*', cors());
 const productsRouter = require('./routes/products');
 const authenticate = require('./authentication/authenticate');
 app.use('/products', authenticate, productsRouter);

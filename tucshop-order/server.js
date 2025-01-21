@@ -10,6 +10,7 @@ const db = mongo.connection;
 db.on('open', () => {console.log('connected to db');app.listen(5005, () => {console.log('server started')})});
 app.use(express.json());
 app.use(cors());
+app.options('*', cors());
 const productsRouter = require('./routes/orders');
 const authenticate = require('./authentication/authenticate');
 app.use('/orders', authenticate, productsRouter);

@@ -12,7 +12,7 @@ const authenticate = async (req, res, next) => {
         algorithms: ["RS256"],
     });
 
-    const { username, option } = decodedToken;
+    const { preferred_username: username, option } = decodedToken;
     req.body.Username = username;
     next();
     }

@@ -1,10 +1,12 @@
+const localhost = '34.154.84.38';
+
 module.exports = global.config = {
-    PRODUCT_URL: 'http://localhost:5000/products',
-    ORDER_URL: 'http://localhost:5005/orders',
-    KEYCLOAK_URL: 'http://localhost:8182/',
+    PRODUCT_URL: `http://${localhost}:5000/products`,
+    ORDER_URL: `http://${localhost}:5005/orders`,
+    KEYCLOAK_URL: `http://${localhost}:8182/`,
     KEYCLOAK_REALM: 'TUCSHOP',
     KEYCLOAK_CLIENT: 'frontend-app',
-    KEYCLOAK_CLIENT_SECRET: 'e7lxClCIbgEOaTOUmik55jayKnL47GQG',
+    KEYCLOAK_CLIENT_SECRET: 'myclientsecret',
     DECODEFUNC: function decodeJwt(jwtToken) {
         const base64Url = jwtToken.split('.')[1]; // Get the payload part of the JWT
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Replace Base64 URL encoding characters

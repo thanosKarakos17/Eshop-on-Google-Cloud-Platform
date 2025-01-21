@@ -77,7 +77,6 @@ export default function Header({userInfo, logout}){
     }
 
     async function logoutRequest(){
-        console.log(logout)
         const data = new URLSearchParams();
         data.append('refresh_token', logout);
         data.append('client_id', global.config.KEYCLOAK_CLIENT);

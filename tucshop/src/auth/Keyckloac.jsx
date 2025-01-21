@@ -28,7 +28,7 @@ const LoginForm = ({ onSwitch, setInfo, setToken, setLogout }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login Data:', formData);
+   // console.log('Login Data:', formData);
     // Add login API logic here
     loginRequest();
   };
@@ -113,9 +113,10 @@ const RegisterForm = ({ onSwitch }) => {
       alert('Passwords do not match');
       return;
     }
-    console.log('Register Data:', formData);
     // Add registration API logic here
     registerRequest();
+    //onSwitch();
+
   };
 
   async function registerRequest(){
@@ -123,7 +124,7 @@ const RegisterForm = ({ onSwitch }) => {
     data.append('client_id', global.config.KEYCLOAK_CLIENT);
     data.append('client_secret', global.config.KEYCLOAK_CLIENT_SECRET);
     data.append('grant_type', 'client_credentials');
-    const result = await fetch(`${global.config.KEYCLOAK_URL}/realms/${global.config.KEYCLOAK_REALM}/protocol/openid-connect/token`,{
+    const result = await fetch(`/realms/${global.config.KEYCLOAK_REALM}/protocol/openid-connect/token`,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -147,14 +148,14 @@ const RegisterForm = ({ onSwitch }) => {
             temporary: false
         }]
     }
-    const reg_result = await fetch(`${global.config.KEYCLOAK_URL}/admin/realms/${global.config.KEYCLOAK_REALM}/users`,{
+    const reg_result = await fetch(`/admin/realms/${global.config.KEYCLOAK_REALM}/users`,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'authorization': `Bearer ${accessToken}`
         },
         body: JSON.stringify(new_data)
-    }).then(res => res.json())
+    }).then(res => console.log(res.status)).catch(err => console.log(err));
 
   }
 }

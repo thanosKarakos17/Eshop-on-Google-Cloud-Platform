@@ -11,7 +11,7 @@ const authenticate = async (req, res, next) => {
         algorithms: ["RS256"],
     });
 
-    const { username, option } = decodedToken;
+    const { preferred_username: username, option } = decodedToken;
     if (option === "Seller") {
         return res.status(403).json({ message: "Access forbidden: Customers are not allowed to modify products" });
     }
